@@ -24,12 +24,12 @@ public class Sender implements Runnable{
     public void run() {
         do {
             try {
-                System.out.println(Messages.INSERT_USERNAME);
+                System.out.println(MessagesClient.INSERT_USERNAME);
                 String sentence = in.readLine().trim();
                 if(!sentence.contains("*") && !sentence.contains(" ") && sentence.length() > 0)
                     sendMessage(sentence);
                 else
-                    System.err.println(Messages.SET_NICKNAME_ERROR);
+                    System.err.println(MessagesClient.SET_NICKNAME_ERROR);
                 Thread.sleep(1000);
             } catch (Exception e) { }
         } while (!Client.connected);
@@ -76,18 +76,18 @@ public class Sender implements Runnable{
                             else throw new ArrayIndexOutOfBoundsException();
                         }
                         else{
-                            System.out.println(Messages.INVALID_COMMAND);
+                            System.out.println(MessagesClient.INVALID_COMMAND);
                         }
                     }else{
                         sendMessage(newSentence);
                     }
                 }else{
-                    System.err.println(Messages.MESSAGE_TOO_LONG);
+                    System.err.println(MessagesClient.MESSAGE_TOO_LONG);
                 }
             } catch(ArrayIndexOutOfBoundsException e) {
-                System.err.println(Messages.NO_PARAMETER);
+                System.err.println(MessagesClient.NO_PARAMETER);
             }catch(Exception e) {
-                System.err.println(Messages.ERROR);
+                System.err.println(MessagesClient.ERROR);
             }
         }
     }
