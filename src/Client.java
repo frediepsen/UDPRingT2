@@ -4,11 +4,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-class Client extends Application {
+public class Client extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("tela.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/tela.fxml"));
         stage.setTitle("Ring");
         stage.setScene(new Scene(root));
         stage.show();
