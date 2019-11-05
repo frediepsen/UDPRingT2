@@ -11,9 +11,8 @@ public class Sender implements Runnable{
     private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     public static String msg;
     public static boolean reSend;
-    public static ArrayList<String> list = new ArrayList<>();
-    public static MessageQueue fila;
     public static boolean returnMsg;
+    public static MessageQueue messageQueue;
 
     Sender(DatagramSocket socket, String hostname) {
         this.socket = socket;
@@ -30,6 +29,9 @@ public class Sender implements Runnable{
     public void run() {
         do {
             try {
+                //if has token and has msg -> send first
+                //if dont have token -> put list
+
                 if(returnMsg || reSend){
                     String sentence = Sender.msg;
                     returnMsg = false;
