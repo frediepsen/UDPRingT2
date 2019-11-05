@@ -8,7 +8,7 @@ public class Receiver implements Runnable {
 
     Receiver(DatagramSocket socket) {
         this.socket = socket;
-        buffer = new byte[Client.BUFFER_SIZE];
+        buffer = new byte[1024];
     }
 
     public void run() {
@@ -22,37 +22,37 @@ public class Receiver implements Runnable {
 
                 if(content.equals("1234")){
                     //recebeu token
-                    Client.hasToken = true;
+                    Controller.hasToken = true;
                     System.out.println("Recebi token");
                 } else {
-                    if(Client.apelido.equals(m.getApelidoOrigem())){
+                    if(Controller.apelido.equals(m.getApelidoOrigem())){
                         System.out.println("Reenviando msg");
                         if(m.getControleDeErro().equals("ACK") || m.getControleDeErro().equals("naocopiado")){
                             System.out.println("Enviando Token...");
-                            Client.hasToken = false;
+                            Controller.hasToken = false;
                             String message = "1234";
                             byte buf[] = message.getBytes();
-                            InetAddress address = InetAddress.getByName(Client.nextMachine);
-                            DatagramPacket packet1 = new DatagramPacket(buf, buf.length, address, Client.PORT);
+                            InetAddress address = InetAddress.getByName(Controller.nextMachine);
+                            DatagramPacket packet1 = new DatagramPacket(buf, buf.length, address, Controller.PORT);
                             socket.send(packet1);
-//                        DatagramSocket socket = new DatagramSocket(Client.PORT);
-//                            Sender s = new Sender(Client.socket, Client.nextMachine);
-//                            Client.st = new Thread(s);
-//                            Client.st.start();
+//                        DatagramSocket socket = new DatagramSocket(Controller.PORT);
+//                            Sender s = new Sender(Controller.socket, Controller.nextMachine);
+//                            Controller.st = new Thread(s);
+//                            Controller.st.start();
                         } else {
                             //erro
                         }
                     } else {
-                        if(Client.apelido.equals(m.getApelidoDestino())){
+                        if(Controller.apelido.equals(m.getApelidoDestino())){
                             System.out.println("Mensagem pra mim");
                             System.out.println("Apelido de Origem: " + m.getApelidoOrigem());
                             System.out.println("Mensagem: " + m.getMensagem());
 
                             m.setControleDeErro("ACK");
                             m.setCRC("123321");
-                            m.setApelidoDestino(m.getApelidoOrigem());
+//                            m.setApelidoDestino(m.getApelidoOrigem());
 
-                            Sender s = new Sender(Client.socket, Client.nextMachine);
+                            Sender s = new Sender(Controller.socket, Controller.nextMachine);
 
                             Sender.msg = "1234;" + m.getControleDeErro()
                                     + ":" + m.getApelidoOrigem()
@@ -61,19 +61,22 @@ public class Receiver implements Runnable {
                                     + ":" + m.getMensagem();
                             Sender.returnMsg = true;
 
-                            Client.st = new Thread(s);
-                            Client.st.start();
+                            Controller.st = new Thread(s);
+                            Controller.st.start();
 
                         } else {
                             System.out.println("nao eh pra mim");
+                            Sender s = new Sender(Controller.socket, Controller.nextMachine);
                             Sender.msg = content;
-                            Sender s = new Sender(Client.socket, Client.nextMachine);
-                            Client.st = new Thread(s);
-                            Client.st.start();
+                            Controller.hasToken = false;
+
+                            Sender.reSend = true;
+                            Controller.st = new Thread(s);
+                            Controller.st.start();
                         }
                     }
                 }
-                Client.connected = true;
+                Controller.connected = true;
             } catch(Exception e) {
                 System.err.println(e);
             }

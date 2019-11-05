@@ -23,17 +23,28 @@ public class Sender implements Runnable{
     private void sendMessage(String message) throws Exception {
         byte buf[] = message.getBytes();
         InetAddress address = InetAddress.getByName(hostname);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Client.PORT);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
         socket.send(packet);
     }
 
     public void run() {
         do {
             try {
-                while(Client.hasToken){
+                if(returnMsg || reSend){
+                    String sentence = Sender.msg;
+                    returnMsg = false;
+                    reSend = false;
+                    if(sentence.length() > 0)
+                        sendMessage(sentence);
+                }
+                while(Controller.hasToken){
                     String sentence;
-                    if(returnMsg){
+                    if(returnMsg || reSend){
                         sentence = Sender.msg;
+                        returnMsg = false;
+                        reSend = false;
+                        if(sentence.length() > 0)
+                            sendMessage(sentence);
                     } else {
                         sentence = in.readLine().trim();
                     }
@@ -43,10 +54,10 @@ public class Sender implements Runnable{
                         System.err.println("Mensagem vazia");
                 }
 //                }
-//                while(!Client.hasToken){
+//                while(!Controller.hasToken){
 //                    fila.addMessage();
 //                }
             } catch (Exception e) { }
-        } while (!Client.connected);
+        } while (!Controller.connected);
     }
 }
