@@ -26,21 +26,16 @@ public class Receiver implements Runnable {
                     System.out.println("Recebi token");
                 } else {
                     if(Controller.apelido.equals(m.getApelidoOrigem())){
-                        System.out.println("Reenviando msg");
-                        if(m.getControleDeErro().equals("ACK") || m.getControleDeErro().equals("naocopiado")){
-                            System.out.println("Enviando Token...");
-                            Controller.hasToken = false;
-                            String message = "1234";
-                            byte buf[] = message.getBytes();
-                            InetAddress address = InetAddress.getByName(Controller.nextMachine);
-                            DatagramPacket packet1 = new DatagramPacket(buf, buf.length, address, Controller.PORT);
-                            socket.send(packet1);
-//                        DatagramSocket socket = new DatagramSocket(Controller.PORT);
-//                            Sender s = new Sender(Controller.socket, Controller.nextMachine);
-//                            Controller.st = new Thread(s);
-//                            Controller.st.start();
-                        } else {
-                            //erro
+                        if(m.getControleDeErro().equals("ACK")){
+                            System.out.println("Mensagem Recebida Pelo Destinatario");
+                            Sender.messageQueue.removeMessage();
+                        } else if(m.getControleDeErro().equals("naocopiado")){
+                            System.out.println("Destinatario nao Existe na Rede");
+                            Sender.messageQueue.removeMessage();
+                        }
+                        else{
+                            System.out.println("Mensagem Voltou com erro");
+                            //TODO ENVIAR TOKEN PARA O PROXIMO
                         }
                     } else {
                         if(Controller.apelido.equals(m.getApelidoDestino())){
@@ -50,8 +45,6 @@ public class Receiver implements Runnable {
 
                             m.setControleDeErro("ACK");
                             m.setCRC("123321");
-//                            m.setApelidoDestino(m.getApelidoOrigem());
-
                             Sender s = new Sender(Controller.socket, Controller.nextMachine);
 
                             Sender.msg = "1234;" + m.getControleDeErro()
@@ -60,19 +53,19 @@ public class Receiver implements Runnable {
                                     + ":" + m.getCRC()
                                     + ":" + m.getMensagem();
                             Sender.returnMsg = true;
-
-                            Controller.st = new Thread(s);
-                            Controller.st.start();
+                            Sender.reSend();
+//                            Controller.st = new Thread(s);
+//                            Controller.st.start();
 
                         } else {
-                            System.out.println("nao eh pra mim");
+                            System.out.println("A mensagem nao eh para mim");
                             Sender s = new Sender(Controller.socket, Controller.nextMachine);
                             Sender.msg = content;
-                            Controller.hasToken = false;
 
                             Sender.reSend = true;
-                            Controller.st = new Thread(s);
-                            Controller.st.start();
+                            Sender.reSend();
+//                            Controller.st = new Thread(s);
+//                            Controller.st.start();
                         }
                     }
                 }
