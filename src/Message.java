@@ -8,8 +8,8 @@ public class Message {
 
     public Message(String content){
         //1234;naocopiado:fred:vini:19385749:Oi Mundo!
-        if(content.equals("1234")){
-            this.token = content;
+        if(!content.contains(";")){
+            this.controleDeErro = content;
         }
         String[] aux = content.split(";");
         this.token = aux[0];

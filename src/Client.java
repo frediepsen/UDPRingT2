@@ -8,7 +8,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/tela.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("tela.fxml"));
         stage.setTitle("Ring");
         stage.setScene(new Scene(root));
         stage.show();

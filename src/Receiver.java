@@ -1,3 +1,4 @@
+import javax.naming.ldap.Control;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -19,6 +20,24 @@ public class Receiver implements Runnable {
                 String content = new String(packet.getData()).trim();
                 System.out.println(content);
                 Message m = new Message(content);
+
+
+                switch (m.getControleDeErro()){
+                    case "erro":
+
+                        break;
+                    case "ACK":
+
+                        break;
+                    case "naocopiado":
+
+                        break;
+                    default:
+                        // recebeu o token
+                        Controller.token = Integer.parseInt(m.getControleDeErro());
+                        Controller.hasToken = true;
+                        break;
+                }
 
                 if(content.equals("1234")){
                     //recebeu token
@@ -53,19 +72,14 @@ public class Receiver implements Runnable {
                                     + ":" + m.getCRC()
                                     + ":" + m.getMensagem();
                             Sender.returnMsg = true;
-                            Sender.reSend();
+                            Sender.resend();
 //                            Controller.st = new Thread(s);
 //                            Controller.st.start();
 
                         } else {
                             System.out.println("A mensagem nao eh para mim");
-                            Sender s = new Sender(Controller.socket, Controller.nextMachine);
                             Sender.msg = content;
-
-                            Sender.reSend = true;
-                            Sender.reSend();
-//                            Controller.st = new Thread(s);
-//                            Controller.st.start();
+                            Sender.resend();
                         }
                     }
                 }
