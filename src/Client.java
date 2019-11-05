@@ -28,12 +28,14 @@ class Client {
         String[] firstLine = host.split(":");
         nextMachine = firstLine[0];
         PORT = Integer.parseInt(firstLine[1]);
-        nickAtual = sc.nextLine();
+        apelido = sc.nextLine();
         timeOutToken = Integer.parseInt(sc.nextLine());
         if(sc.nextLine().equals("true")) {
             tokenSender = true;
+            hasToken = true;
         } else{
             tokenSender = false;
+            hasToken = false;
         }
 
         socket = new DatagramSocket(PORT);

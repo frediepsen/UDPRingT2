@@ -13,6 +13,7 @@ public class Sender implements Runnable{
     public static boolean reSend;
     public static ArrayList<String> list = new ArrayList<>();
     public static MessageQueue fila;
+    public static boolean returnMsg;
 
     Sender(DatagramSocket socket, String hostname) {
         this.socket = socket;
@@ -29,22 +30,22 @@ public class Sender implements Runnable{
     public void run() {
         do {
             try {
-                long time = System.currentTimeMillis();
-                while(Client.hasToken && (((time - System.currentTimeMillis())*-1) < Client.timeOutToken * 1000)) {
+                while(Client.hasToken){
                     String sentence;
-                    if(fila.isEmpty()){
-                        sentence = msg;
+                    if(returnMsg){
+                        sentence = Sender.msg;
                     } else {
-                        sentence = fila.removeMessage();
+                        sentence = in.readLine().trim();
                     }
                     if(sentence.length() > 0)
                         sendMessage(sentence);
                     else
                         System.err.println("Mensagem vazia");
                 }
-                while(!Client.hasToken){
-                    fila.addMessage(in.readLine().trim());
-                }
+//                }
+//                while(!Client.hasToken){
+//                    fila.addMessage();
+//                }
             } catch (Exception e) { }
         } while (!Client.connected);
     }
