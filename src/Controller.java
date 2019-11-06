@@ -5,8 +5,7 @@ import javafx.scene.control.TextField;
 
 
 import java.io.File;
-import java.net.DatagramSocket;
-import java.net.URL;
+import java.net.*;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -46,7 +45,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        try {
-           File file = new File("C:\\Users\\Usuario\\Desktop\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\Vianna\\Documents\\PUCRS\\Redes_e_LabRedes\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -56,6 +55,7 @@ public class Controller implements Initializable {
            timeOutToken = Integer.parseInt(sc.nextLine());
            token = 1;
            time_token = 0;
+           Sender.sendingMessage = false;
            if (sc.nextLine().equals("true")) {
                tokenSender = true;
                hasToken = true;
@@ -63,22 +63,30 @@ public class Controller implements Initializable {
                tokenSender = false;
                hasToken = false;
            }
+           socket = new DatagramSocket();
        } catch (Exception e){
            e.printStackTrace();
        }
 
+        Sender sender = new Sender(socket, nextMachine);
+        Receiver receiver = new Receiver(socket);
+        Thread ts = new Thread(sender);
+        Thread tr = new Thread(receiver);
+        ts.start();
+        tr.start();
+
         btnColocarFila.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() + CRC16.calculate_crc(etMensagem.getText().getBytes()) + etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarBroadcast.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes())+ etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarNoOne.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });

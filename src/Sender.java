@@ -16,6 +16,7 @@ public class Sender implements Runnable{
     Sender(DatagramSocket socket, String hostname) {
         this.socket = socket;
         this.hostname = hostname;
+        messageQueue = new MessageQueue();
     }
 
     private static void sendMessage(String message) throws Exception {
@@ -34,16 +35,19 @@ public class Sender implements Runnable{
                 while(Controller.hasToken){
                     if(!sendingMessage){
                         if(messageQueue.isEmpty()){
-                            sendMessage(String.valueOf(Controller.token));
-                            Controller.hasToken = false;
-                            break;
+//                            sendMessage(String.valueOf(Controller.token));
+//                            Controller.hasToken = false;
+//                            break;
+                            
                         } else {
                             sendMessage("2345" + messageQueue.getFirstMessage());
                             sendingMessage = true;
                         }
                     }
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } while (!Controller.connected);
     }
 

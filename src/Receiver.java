@@ -123,7 +123,7 @@ public class Receiver implements Runnable {
                 }
                 Controller.connected = true;
             } catch(Exception e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
     }

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class MessageQueue {
-    public LinkedList<String> queue;
+    public LinkedList<String> queue = new LinkedList<>();
 
     // Adiciona a mensagem na fila
     public void addMessage(String message){
