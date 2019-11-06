@@ -58,7 +58,7 @@ public class Receiver implements Runnable {
                         }
                     } else {
                         if(Controller.apelido.equals(m.getApelidoDestino())){
-                            System.out.println("Mensagem pra mim");
+                            System.out.println("Mensagem para mim");
                             System.out.println("Apelido de Origem: " + m.getApelidoOrigem());
                             System.out.println("Mensagem: " + m.getMensagem());
 
@@ -76,7 +76,12 @@ public class Receiver implements Runnable {
 //                            Controller.st = new Thread(s);
 //                            Controller.st.start();
 
-                        } else {
+                        } else if(m.getApelidoDestino().equals("TODOS")){
+                            System.out.println("Mensagem Broadcast");
+                            Sender.msg = content;
+                            Sender.resend();
+                        }
+                        else {
                             System.out.println("A mensagem nao eh para mim");
                             Sender.msg = content;
                             Sender.resend();
