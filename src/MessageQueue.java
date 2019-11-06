@@ -28,4 +28,8 @@ public class MessageQueue {
     public Integer getTamanho(){
         return this.queue.size();
     }
+
+    public String getFirstMessage(){
+        return queue.getFirst();
+    }
 }

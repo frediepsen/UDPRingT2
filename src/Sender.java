@@ -38,7 +38,7 @@ public class Sender implements Runnable{
                             Controller.hasToken = false;
                             break;
                         } else {
-                            sendMessage(Controller.token + messageQueue.removeMessage());
+                            sendMessage("2345" + messageQueue.getFirstMessage());
                             sendingMessage = true;
                         }
                     }
@@ -57,7 +57,7 @@ public class Sender implements Runnable{
     public static void retransmitir() throws Exception {
         if(Controller.hasToken){
             if(!sendingMessage){
-                sendMessage(Controller.token + messageQueue.removeMessage());
+                sendMessage("2345" + messageQueue.getFirstMessage());
                 sendingMessage = true;
             }
         }

@@ -66,17 +66,17 @@ public class Controller implements Initializable {
        }
 
         btnColocarFila.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() + ":crc:" + etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() + CRC16.calculate_crc(etMensagem.getText().getBytes()) + etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarBroadcast.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:crc:" + etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes())+ etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarNoOne.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:crc:" + etMensagem.getText());
+           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + etMensagem.getText());
            etMensagem.setText("");
            etNome.setText("");
        });
