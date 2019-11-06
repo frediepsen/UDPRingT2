@@ -49,8 +49,14 @@ public class Receiver implements Runnable {
                             System.out.println("Mensagem Recebida Pelo Destinatario");
                             Sender.messageQueue.removeMessage();
                         } else if(m.getControleDeErro().equals("naocopiado")){
-                            System.out.println("Destinatario nao Existe na Rede");
-                            Sender.messageQueue.removeMessage();
+                            if(m.getApelidoDestino().equals("broadcast")){
+                                System.out.println("Mensagem de Broadcast enviada a todos");
+                                Sender.messageQueue.removeMessage();
+                            }
+                            else{
+                                System.out.println("Destinatario nao Existe na Rede");
+                                Sender.messageQueue.removeMessage();
+                            }
                         }
                         else{
                             System.out.println("Mensagem Voltou com erro");
@@ -76,7 +82,7 @@ public class Receiver implements Runnable {
 //                            Controller.st = new Thread(s);
 //                            Controller.st.start();
 
-                        } else if(m.getApelidoDestino().equals("TODOS")){
+                        } else if(m.getApelidoDestino().equals("broadcast")){
                             System.out.println("Mensagem Broadcast");
                             Sender.msg = content;
                             Sender.resend();
