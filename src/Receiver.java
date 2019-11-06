@@ -1,4 +1,5 @@
-import javax.naming.ldap.Control;
+import javafx.scene.control.Control;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -16,32 +17,22 @@ public class Receiver implements Runnable {
     public void run() {
         while (true) {
             try {
+                if(System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 1000){
+                    Controller.hasToken = false;
+                    Sender.msg = "1234";
+                    Sender.resend();
+                }
+
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String content = new String(packet.getData()).trim();
                 System.out.println(content);
                 Message m = new Message(content);
-
-//                switch (m.getControleDeErro()){
-//                    case "erro":
-//
-//                        break;
-//                    case "ACK":
-//
-//                        break;
-//                    case "naocopiado":
-//
-//                        break;
-//                    default:
-//                        // recebeu o token
-//                        Controller.token = Integer.parseInt(m.getControleDeErro());
-//                        Controller.hasToken = true;
-//                        break;
-//                }
-
+                
                 if(content.equals("1234")){
                     //recebeu token
                     Controller.hasToken = true;
+                    Controller.time_token = System.currentTimeMillis();
                     System.out.println("Recebi token");
                 }
                 else {
@@ -51,7 +42,7 @@ public class Receiver implements Runnable {
                             Sender.messageQueue.removeMessage();
                         }
                         else if(m.getControleDeErro().equals("naocopiado")){
-                            if(m.getApelidoDestino().equals("broadcast")){
+                            if(m.getApelidoDestino().equals("TODOS")){
                                 System.out.println("Mensagem de Broadcast enviada a todos");
                                 Sender.messageQueue.removeMessage();
                             }

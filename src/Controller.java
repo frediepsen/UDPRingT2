@@ -40,6 +40,7 @@ public class Controller implements Initializable {
     public static DatagramSocket socket;
     public static boolean connected;
     public static int token;
+    public static long time_token;
 
 
     @Override
@@ -54,6 +55,7 @@ public class Controller implements Initializable {
            apelido = sc.nextLine();
            timeOutToken = Integer.parseInt(sc.nextLine());
            token = 1;
+           time_token = 0;
            if (sc.nextLine().equals("true")) {
                tokenSender = true;
                hasToken = true;
