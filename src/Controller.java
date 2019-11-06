@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.net.*;
+import java.nio.channels.DatagramChannel;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -45,7 +46,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        try {
-           File file = new File("C:\\Users\\Vianna\\Documents\\PUCRS\\Redes_e_LabRedes\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\Usuario\\Desktop\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -63,7 +64,12 @@ public class Controller implements Initializable {
                tokenSender = false;
                hasToken = false;
            }
-           socket = new DatagramSocket();
+//           DatagramChannel channel = DatagramChannel.open();
+//           socket = channel.socket(thiPORT);
+           System.out.println(nextMachine);
+           System.out.println(PORT);
+           socket = new DatagramSocket(PORT);
+//           socket = new DatagramSocket(PORT, InetAddress.getByAddress(nextMachine.getBytes()));
        } catch (Exception e){
            e.printStackTrace();
        }
