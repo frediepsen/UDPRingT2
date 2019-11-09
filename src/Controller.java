@@ -30,7 +30,7 @@ public class Controller implements Initializable{
     @FXML
     private TextField etNome;
 
-    public static String apelido = "fred";
+    public static String apelido;
     public static int PORT;
     public static String nextMachine;
     public static int timeOutToken;
@@ -38,7 +38,6 @@ public class Controller implements Initializable{
     public static Thread st;
     public static boolean hasToken;
     public static DatagramSocket socket;
-    public static boolean connected;
     public static int token;
     public static long time_token;
 
@@ -67,7 +66,7 @@ public class Controller implements Initializable{
            System.out.println(nextMachine);
            System.out.println(PORT);
 
-           socket = new DatagramSocket();
+           socket = new DatagramSocket(PORT);
            Receiver receiver = new Receiver(socket);
            Sender sender = new Sender(socket, nextMachine);
            Thread ts = new Thread(sender);
@@ -80,20 +79,29 @@ public class Controller implements Initializable{
        }
 
         btnColocarFila.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
-            System.out.println("Mensagem adicionanda na fila");
-           etMensagem.setText("");
-           etNome.setText("");
+            try {
+                Sender.sendMessage("2345;naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            etMensagem.setText("");
+            etNome.setText("");
        });
        btnEnviarBroadcast.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
-           System.out.println("Mensagem adicionanda na fila");
+           try {
+               Sender.sendMessage("2345;naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+           } catch (Exception ex) {
+               ex.printStackTrace();
+           }
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarNoOne.setOnAction(e ->{
-           Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
-           System.out.println("Mensagem adicionanda na fila");
+           try {
+               Sender.sendMessage("2345;naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+           } catch (Exception ex) {
+               ex.printStackTrace();
+           }
            etMensagem.setText("");
            etNome.setText("");
        });
