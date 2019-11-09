@@ -11,10 +11,6 @@ public class MessageQueue {
         this.queue.add(message);
     }
 
-    public void addFirstMessage(String message){
-        this.queue.addFirst(message);
-    }
-
     // Retorna a primeira mensagem da fila
     public String removeMessage(){
         String msg = this.queue.removeFirst();
@@ -25,8 +21,12 @@ public class MessageQueue {
         return queue.size() == 0;
     }
 
-    public Integer getTamanho(){
-        return this.queue.size();
+    public void showQueue(){
+        if(!isEmpty()){
+            for(int i = 0; i<queue.size(); i++){
+                System.out.println(queue.get(i));
+            }
+        }
     }
 
     public String getFirstMessage(){

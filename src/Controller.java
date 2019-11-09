@@ -10,7 +10,7 @@ import java.nio.channels.DatagramChannel;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable{
 
     @FXML
     private Button btnColocarFila;
@@ -44,9 +44,9 @@ public class Controller implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle){
        try {
-           File file = new File("C:\\Users\\Usuario\\Desktop\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\Vianna\\Documents\\PUCRS\\Redes_e_LabRedes\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -64,35 +64,36 @@ public class Controller implements Initializable {
                tokenSender = false;
                hasToken = false;
            }
-//           DatagramChannel channel = DatagramChannel.open();
-//           socket = channel.socket(thiPORT);
            System.out.println(nextMachine);
            System.out.println(PORT);
-           socket = new DatagramSocket(PORT);
-//           socket = new DatagramSocket(PORT, InetAddress.getByAddress(nextMachine.getBytes()));
+
+           socket = new DatagramSocket();
+           Receiver receiver = new Receiver(socket);
+           Sender sender = new Sender(socket, nextMachine);
+           Thread ts = new Thread(sender);
+           Thread tr = new Thread(receiver);
+           ts.start();
+           tr.start();
+
        } catch (Exception e){
            e.printStackTrace();
        }
 
-        Sender sender = new Sender(socket, nextMachine);
-        Receiver receiver = new Receiver(socket);
-        Thread ts = new Thread(sender);
-        Thread tr = new Thread(receiver);
-        ts.start();
-        tr.start();
-
         btnColocarFila.setOnAction(e ->{
            Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+            System.out.println("Mensagem adicionanda na fila");
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarBroadcast.setOnAction(e ->{
            Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+           System.out.println("Mensagem adicionanda na fila");
            etMensagem.setText("");
            etNome.setText("");
        });
        btnEnviarNoOne.setOnAction(e ->{
            Sender.messageQueue.addMessage(";naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+           System.out.println("Mensagem adicionanda na fila");
            etMensagem.setText("");
            etNome.setText("");
        });

@@ -8,8 +8,6 @@ public class Sender implements Runnable{
     private static DatagramSocket socket;
     private static String hostname;
     public static String msg;
-    public static boolean reSend;
-    public static boolean returnMsg;
     public static MessageQueue messageQueue;
     public static boolean sendingMessage = false;
 
@@ -19,36 +17,25 @@ public class Sender implements Runnable{
         messageQueue = new MessageQueue();
     }
 
-    private static void sendMessage(String message) throws Exception {
+    public static void sendMessage(String message) throws Exception {
         byte buf[] = message.getBytes();
         InetAddress address = InetAddress.getByAddress(hostname.getBytes());
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
         socket.send(packet);
-        //messageQueue = new MessageQueue();
     }
 
     public void run() {
-        do {
-            try {
-                //if has token and has msg -> send first
-                //if dont have token -> put list
-                while(Controller.hasToken){
-                    //if(!sendingMessage){
-                        if(messageQueue.isEmpty()){
-//                            sendMessage(String.valueOf(Controller.token));
-//                            Controller.hasToken = false;
-//                            break;
-                            
-                        } else {
-                            sendMessage("2345" + messageQueue.getFirstMessage());
-//                            sendingMessage = true;
-                        }
-                    //}
+        while(true){
+            if(Controller.hasToken){
+                if(!messageQueue.isEmpty()){
+                    try {
+                        sendMessage("2345" + messageQueue.getFirstMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } while (!Controller.connected);
+        }
     }
 
     public static void resend() throws IOException {
@@ -56,15 +43,6 @@ public class Sender implements Runnable{
         InetAddress address = InetAddress.getByName(Sender.hostname);
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
         socket.send(packet);
-        return;
     }
 
-    public static void retransmitir() throws Exception {
-        if(Controller.hasToken){
-            if(!sendingMessage){
-                sendMessage("2345" + messageQueue.getFirstMessage());
-//                sendingMessage = true;
-            }
-        }
-    }
 }
