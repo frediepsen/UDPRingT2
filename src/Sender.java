@@ -50,9 +50,17 @@ public class Sender implements Runnable{
         }
     }
 
-    public static void resend() throws IOException {
-        byte buf[] = Sender.msg.getBytes();
+    public static void resend(String msg) throws IOException {
+        byte buf[] = msg.getBytes();
         InetAddress address = InetAddress.getByName(Sender.hostname);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
+        socket.send(packet);
+    }
+
+    public static void sendToken() throws IOException {
+        String token = "1234";
+        byte buf[] = token.getBytes();
+        InetAddress address = InetAddress.getByName(hostname);
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
         socket.send(packet);
     }
