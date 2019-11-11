@@ -18,7 +18,7 @@ public class MessageQueue {
     }
 
     public boolean isEmpty(){
-        return queue.size() == 0;
+        return queue.isEmpty();
     }
 
     public void showQueue(){

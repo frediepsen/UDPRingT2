@@ -48,7 +48,7 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
        try {
-           File file = new File("C:\\Users\\jst\\Documents\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\Vianna\\Downloads\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -83,6 +83,7 @@ public class Controller implements Initializable{
 
         btnColocarFila.setOnAction(e ->{
             try {
+                System.out.println("Mensagem adicionada na fila");
                 Sender.sendMessage("2345;naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -92,6 +93,7 @@ public class Controller implements Initializable{
        });
        btnEnviarBroadcast.setOnAction(e ->{
            try {
+               System.out.println("Mensagem adicionada na fila");
                Sender.sendMessage("2345;naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            } catch (Exception ex) {
                ex.printStackTrace();
@@ -101,6 +103,7 @@ public class Controller implements Initializable{
        });
        btnEnviarNoOne.setOnAction(e ->{
            try {
+               System.out.println("Mensagem adicionada na fila");
                Sender.sendMessage("2345;naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            } catch (Exception ex) {
                ex.printStackTrace();
@@ -109,17 +112,27 @@ public class Controller implements Initializable{
            etNome.setText("");
        });
        btnShowFila.setOnAction(e ->{
-           for(int i = 0; i < Sender.messageQueue.size(); i++){
-               Message m = new Message(Sender.messageQueue.getMessage(i));
-               System.out.println((i+1) + ". De: " + m.getApelidoOrigem() + " - Para: " + m.getApelidoDestino() + "\n"
-               + "Mensagem: " + m.getMensagem());
+           if(Sender.messageQueue.isEmpty()){
+               System.out.println("A fila esta vazia");
            }
-           System.out.println("----------------------------- \n");
+           else{
+               for(int i = 0; i < Sender.messageQueue.size(); i++){
+                   Message m = new Message(Sender.messageQueue.getMessage(i));
+                   System.out.println((i+1) + ". De: " + m.getApelidoOrigem() + " - Para: " + m.getApelidoDestino() + "\n"
+                           + "Mensagem: " + m.getMensagem());
+               }
+               System.out.println("----------------------------- \n");
+           }
 
        });
 
        btnNovoToken.setOnAction(e ->{
            Controller.token = token * 1234;
+           try{
+               Sender.sendToken();
+           } catch (Exception ex) {
+               ex.printStackTrace();
+           }
        });
 
     }

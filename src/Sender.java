@@ -23,12 +23,10 @@ public class Sender implements Runnable{
     }
 
     public static void processMessage() throws Exception {
-        if(Controller.hasToken){
-            if(!messageQueue.isEmpty() && sendingMessage == false ){
-                System.out.println(messageQueue.getFirstMessage());
-                Sender.resend(messageQueue.getFirstMessage());
-                sendingMessage = true;
-            }
+        if(Controller.hasToken && !messageQueue.isEmpty() && !sendingMessage){
+            System.out.println(messageQueue.getFirstMessage());
+            Sender.resend(messageQueue.getFirstMessage());
+            sendingMessage = true;
         }
     }
 
@@ -43,14 +41,12 @@ public class Sender implements Runnable{
                     e.printStackTrace();
                 }
             }
-            if(Controller.hasToken){
-                if(!messageQueue.isEmpty()){
-                    try {
-                        System.out.println("enviando msg agora");
-                        processMessage();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if(Controller.hasToken && !messageQueue.isEmpty()){
+                try {
+                    System.out.println("enviando msg agora");
+                    processMessage();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

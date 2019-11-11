@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Receiver implements Runnable {
     private static DatagramSocket socket;
+    private int countError=0;
     private byte[] buffer;
     private Message m;
 
@@ -55,10 +56,17 @@ public class Receiver implements Runnable {
                                     }
 
                                 } else {
-                                    System.out.println("Mensagem Voltou com erro");
-                                    Sender.sendingMessage = false;
-                                    Controller.hasToken = false;
-                                    Sender.sendToken();
+                                    countError++;
+                                    if(countError==2){
+                                        System.out.println("Mensagem voltou com erro duas vezes, enviandotoken para a proxima maquina");
+                                        Sender.messageQueue.removeMessage();
+                                        Sender.sendingMessage = false;
+                                        Controller.hasToken = false;
+                                        Sender.sendToken();
+                                    }
+                                    else{
+                                        System.out.println("Mensagem voltou com erro, tentando reenviar");
+                                    }
                                 }
                             } else {
                                 if (Controller.apelido.equals(m.getApelidoDestino())) {
@@ -86,7 +94,7 @@ public class Receiver implements Runnable {
                                             + ":" + m.getMensagem();
                                     Sender.resend(msg);
 
-                                } else if (m.getApelidoDestino().equals("broadcast")) {
+                                } else if (m.getApelidoDestino().equals("TODOS")) {
                                     System.out.println("Mensagem Broadcast");
                                     Sender.resend(content);
 
