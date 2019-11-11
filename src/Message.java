@@ -10,6 +10,7 @@ public class Message {
         //1234;naocopiado:fred:vini:19385749:Oi Mundo!
         if(!content.contains(";")){
             this.controleDeErro = content;
+            return;
         }
         String[] aux = content.split(";");
         this.token = aux[0];

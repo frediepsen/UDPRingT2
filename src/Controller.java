@@ -48,7 +48,7 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
        try {
-           File file = new File("C:\\Users\\Vianna\\Documents\\PUCRS\\Redes_e_LabRedes\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\Usuario\\Desktop\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -110,8 +110,12 @@ public class Controller implements Initializable{
        });
        btnShowFila.setOnAction(e ->{
            for(int i = 0; i < Sender.messageQueue.size(); i++){
-               System.out.println(Sender.messageQueue.getMessage(i));
+               Message m = new Message(Sender.messageQueue.getMessage(i));
+               System.out.println((i+1) + ". De: " + m.getApelidoOrigem() + " - Para: " + m.getApelidoDestino() + "\n"
+               + "Mensagem: " + m.getMensagem());
            }
+           System.out.println("----------------------------- \n");
+
        });
 
        btnNovoToken.setOnAction(e ->{

@@ -28,7 +28,7 @@ public class Receiver implements Runnable {
 
                         if (content.equals("1234")) {
                             Controller.hasToken = true;
-                            //Controller.time_token = System.currentTimeMillis();
+                            Controller.time_token = System.currentTimeMillis();
                             System.out.println("Recebi token");
                         }
                         else {

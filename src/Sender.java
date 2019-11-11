@@ -32,11 +32,15 @@ public class Sender implements Runnable{
 
     public void run() {
         while(true){
-//            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 1000) {
-//                Controller.hasToken = false;
-//                System.out.println("Acabou o tempo do token, enviando para o proximo");
-//                Sender.sendMessage("1234");
-//            }
+            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 1000 && Controller.hasToken) {
+                Controller.hasToken = false;
+                System.out.println("Acabou o tempo do token, enviando para o proximo");
+                try {
+                    Sender.sendMessage("1234");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             if(Controller.hasToken){
                 if(!messageQueue.isEmpty()){
                     try {
