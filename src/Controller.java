@@ -84,7 +84,8 @@ public class Controller implements Initializable{
         btnColocarFila.setOnAction(e ->{
             try {
                 System.out.println("Mensagem adicionada na fila");
-                Sender.sendMessage("2345;naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+                Sender.messageQueue.addMessage("2345;naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+//                Sender.sendMessage("2345;naocopiado:" + apelido + ":" + etNome.getText() +":"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -94,7 +95,8 @@ public class Controller implements Initializable{
        btnEnviarBroadcast.setOnAction(e ->{
            try {
                System.out.println("Mensagem adicionada na fila");
-               Sender.sendMessage("2345;naocopiado:" + apelido + ":broadcast:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+               Sender.messageQueue.addMessage("2345;naocopiado:" + apelido + ":TODOS:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+               //Sender.sendMessage("2345;naocopiado:" + apelido + ":TODOS:"+ CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            } catch (Exception ex) {
                ex.printStackTrace();
            }
@@ -104,7 +106,8 @@ public class Controller implements Initializable{
        btnEnviarNoOne.setOnAction(e ->{
            try {
                System.out.println("Mensagem adicionada na fila");
-               Sender.sendMessage("2345;naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+               Sender.messageQueue.addMessage("2345;naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
+               //Sender.sendMessage("2345;naocopiado:" + apelido + ":ninguem:" + CRC16.calculate_crc(etMensagem.getText().getBytes()) + ":" + etMensagem.getText());
            } catch (Exception ex) {
                ex.printStackTrace();
            }

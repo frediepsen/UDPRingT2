@@ -17,11 +17,6 @@ public class Sender implements Runnable{
         messageQueue = new MessageQueue();
     }
 
-    public static void sendMessage(String message) throws Exception {
-        messageQueue.addMessage(message);
-        processMessage();
-    }
-
     public static void processMessage() throws Exception {
         if(Controller.hasToken && !messageQueue.isEmpty() && !sendingMessage){
             System.out.println(messageQueue.getFirstMessage());
@@ -36,11 +31,12 @@ public class Sender implements Runnable{
                 Controller.hasToken = false;
                 System.out.println("Acabou o tempo do token, enviando para o proximo");
                 try {
-                    Sender.sendMessage("1234");
+                    Sender.sendToken();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println(messageQueue.isEmpty());
             if(Controller.hasToken && !messageQueue.isEmpty()){
                 try {
                     System.out.println("enviando msg agora");
