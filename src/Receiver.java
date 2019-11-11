@@ -38,19 +38,25 @@ public class Receiver implements Runnable {
                                 if (m.getControleDeErro().equals("ACK")) {
                                     System.out.println("Mensagem Recebida Pelo Destinatario");
                                     Sender.messageQueue.removeMessage();
+                                    Sender.sendingMessage = false;
                                 }
                                 else if (m.getControleDeErro().equals("naocopiado")) {
 
                                     if (m.getApelidoDestino().equals("TODOS")) {
                                         System.out.println("Mensagem de Broadcast enviada a todos");
                                         Sender.messageQueue.removeMessage();
+                                        Sender.sendingMessage = false;
                                     } else {
                                         System.out.println("Destinatario nao Existe na Rede");
                                         Sender.messageQueue.removeMessage();
+                                        Sender.sendingMessage = false;
+                                        Controller.hasToken = false;
+                                        Sender.sendToken();
                                     }
 
                                 } else {
                                     System.out.println("Mensagem Voltou com erro");
+                                    Sender.sendingMessage = false;
                                     Controller.hasToken = false;
                                     Sender.sendToken();
                                 }

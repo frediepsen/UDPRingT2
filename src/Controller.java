@@ -48,7 +48,7 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
        try {
-           File file = new File("C:\\Users\\Usuario\\Desktop\\UDPRingT2\\src\\config");
+           File file = new File("C:\\Users\\jst\\Documents\\UDPRingT2\\src\\config");
            Scanner sc = new Scanner(file);
            String host = sc.nextLine();
            String[] firstLine = host.split(":");
@@ -57,7 +57,6 @@ public class Controller implements Initializable{
            apelido = sc.nextLine();
            timeOutToken = Integer.parseInt(sc.nextLine());
            token = 1;
-           time_token = 0;
            Sender.sendingMessage = false;
            if (sc.nextLine().equals("true")) {
                tokenSender = true;
@@ -74,6 +73,7 @@ public class Controller implements Initializable{
            Sender sender = new Sender(socket, nextMachine);
            Thread ts = new Thread(sender);
            Thread tr = new Thread(receiver);
+           time_token = System.currentTimeMillis();
            ts.start();
            tr.start();
 

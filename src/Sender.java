@@ -19,13 +19,15 @@ public class Sender implements Runnable{
 
     public static void sendMessage(String message) throws Exception {
         messageQueue.addMessage(message);
+        processMessage();
+    }
+
+    public static void processMessage() throws Exception {
         if(Controller.hasToken){
-            if(!messageQueue.isEmpty()){
-                byte buf[] = messageQueue.getFirstMessage().getBytes();
-                InetAddress address = InetAddress.getByName(hostname);
+            if(!messageQueue.isEmpty() && sendingMessage == false ){
                 System.out.println(messageQueue.getFirstMessage());
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
-                socket.send(packet);
+                Sender.resend(messageQueue.getFirstMessage());
+                sendingMessage = true;
             }
         }
     }
@@ -45,7 +47,7 @@ public class Sender implements Runnable{
                 if(!messageQueue.isEmpty()){
                     try {
                         System.out.println("enviando msg agora");
-                        sendMessage("2345" + messageQueue.getFirstMessage());
+                        processMessage();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
