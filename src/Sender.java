@@ -8,6 +8,7 @@ public class Sender implements Runnable{
     private static DatagramSocket socket;
     private static String hostname;
     public static String msg;
+    public static boolean aux;
     public static MessageQueue messageQueue;
     public static boolean sendingMessage = false;
 
@@ -15,6 +16,11 @@ public class Sender implements Runnable{
         this.socket = socket;
         this.hostname = hostname;
         messageQueue = new MessageQueue();
+    }
+
+    public static void sendMessage(String message) throws Exception {
+        messageQueue.addMessage(message);
+        processMessage();
     }
 
     public static void processMessage() throws Exception {
@@ -27,7 +33,7 @@ public class Sender implements Runnable{
 
     public void run() {
         while(true){
-            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 1000 && Controller.hasToken) {
+            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 6000 && Controller.hasToken) {
                 Controller.hasToken = false;
                 System.out.println("Acabou o tempo do token, enviando para o proximo");
                 try {
@@ -36,11 +42,12 @@ public class Sender implements Runnable{
                     e.printStackTrace();
                 }
             }
-            System.out.println(messageQueue.isEmpty());
+            //System.out.println(messageQueue.isEmpty());
             if(Controller.hasToken && !messageQueue.isEmpty()){
                 try {
-                    System.out.println("enviando msg agora");
-                    processMessage();
+                    //System.out.println("enviando msg agora");
+                    //aux = false;
+                    //processMessage();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

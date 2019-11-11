@@ -20,8 +20,8 @@ public class Receiver implements Runnable {
     public void run() {
                 while (true) {
                     try {
-                        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                        System.out.println(socket.isClosed());
+                        DatagramPacket packet = new DatagramPacket(buffer,0, buffer.length);
+//                        System.out.println(socket.isClosed());
                         socket.receive(packet);
                         System.out.println("@@@");
                         String content = new String(packet.getData(), 0, packet.getLength());
