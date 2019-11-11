@@ -33,7 +33,7 @@ public class Sender implements Runnable{
 
     public void run() {
         while(true){
-            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 6000 && Controller.hasToken) {
+            if (System.currentTimeMillis() - Controller.time_token > Controller.timeOutToken * 7000 && Controller.hasToken) {
                 Controller.hasToken = false;
                 System.out.println("Acabou o tempo do token, enviando para o proximo");
                 try {
@@ -42,12 +42,9 @@ public class Sender implements Runnable{
                     e.printStackTrace();
                 }
             }
-            //System.out.println(messageQueue.isEmpty());
             if(Controller.hasToken && !messageQueue.isEmpty()){
                 try {
-                    //System.out.println("enviando msg agora");
-                    //aux = false;
-                    //processMessage();
+                    processMessage();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,7 +55,7 @@ public class Sender implements Runnable{
     public static void resend(String msg) throws IOException {
         byte buf[] = msg.getBytes();
         InetAddress address = InetAddress.getByName(Sender.hostname);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
+        DatagramPacket packet = new DatagramPacket(buf,0, buf.length, address, Controller.PORT);
         socket.send(packet);
     }
 
@@ -66,7 +63,7 @@ public class Sender implements Runnable{
         String token = "1234";
         byte buf[] = token.getBytes();
         InetAddress address = InetAddress.getByName(hostname);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Controller.PORT);
+        DatagramPacket packet = new DatagramPacket(buf,0, buf.length, address, Controller.PORT);
         socket.send(packet);
     }
 

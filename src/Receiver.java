@@ -21,16 +21,14 @@ public class Receiver implements Runnable {
                 while (true) {
                     try {
                         DatagramPacket packet = new DatagramPacket(buffer,0, buffer.length);
-//                        System.out.println(socket.isClosed());
                         socket.receive(packet);
-                        System.out.println("@@@");
                         String content = new String(packet.getData(), 0, packet.getLength());
                         System.out.println(content);
 
                         if (content.equals("1234")) {
                             Controller.hasToken = true;
                             Controller.time_token = System.currentTimeMillis();
-                            System.out.println("Recebi token");
+                            System.out.println("Recebi o token");
                         }
                         else {
                             m = new Message(content);
@@ -40,6 +38,8 @@ public class Receiver implements Runnable {
                                     System.out.println("Mensagem Recebida Pelo Destinatario");
                                     Sender.messageQueue.removeMessage();
                                     Sender.sendingMessage = false;
+                                    Controller.hasToken = false;
+                                    Sender.sendToken();
                                 }
                                 else if (m.getControleDeErro().equals("naocopiado")) {
 
@@ -47,6 +47,8 @@ public class Receiver implements Runnable {
                                         System.out.println("Mensagem de Broadcast enviada a todos");
                                         Sender.messageQueue.removeMessage();
                                         Sender.sendingMessage = false;
+                                        Controller.hasToken = false;
+                                        Sender.sendToken();
                                     } else {
                                         System.out.println("Destinatario nao Existe na Rede");
                                         Sender.messageQueue.removeMessage();
@@ -76,7 +78,7 @@ public class Receiver implements Runnable {
 
                                     Random gerador = new Random();
                                     int erroRandom = gerador.nextInt(11);
-                                    if (erroRandom < 6) {
+                                    if (erroRandom < 5) {
                                         m.setMensagem("Erro Randomico");
                                     }
 
