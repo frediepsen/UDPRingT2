@@ -5,15 +5,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <Button fx:id="btnColocarFila" layoutX="443.0" layoutY="75.0" mnemonicParsing="false" text="Colocar na fila" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="80.0" />
       <TextField fx:id="etMensagem" layoutX="381.0" layoutY="14.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0" />
       <Button fx:id="btnEnviarBroadcast" layoutX="467.0" layoutY="114.0" mnemonicParsing="false" text="Enviar Broadcast" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="110.0" />
       <Button fx:id="btnEnviarNoOne" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Enviar para ninguém" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="140.0" />
-      <Button fx:id="btnNovoToken" layoutX="68.0" layoutY="211.0" mnemonicParsing="false" text="Criar novo token" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="btnNovoToken" layoutX="68.0" layoutY="211.0" mnemonicParsing="false" text="Criar novo token" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="200.0" />
       <TextField fx:id="etNome" layoutX="26.0" layoutY="14.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
       <Label layoutX="14.0" layoutY="18.0" text="Nome" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0" />
       <Label layoutX="16.0" layoutY="45.0" text="Msg" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="48.0" />
+      <Button fx:id="btnShowFila" layoutX="26.0" layoutY="174.0" mnemonicParsing="false" text="Mostrar fila de mensagens" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="170.0" />
    </children>
 </AnchorPane>

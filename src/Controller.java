@@ -25,6 +25,9 @@ public class Controller implements Initializable{
     private Button btnEnviarNoOne;
 
     @FXML
+    private Button btnShowFila;
+
+    @FXML
     private Button btnNovoToken;
 
     @FXML
@@ -105,6 +108,12 @@ public class Controller implements Initializable{
            etMensagem.setText("");
            etNome.setText("");
        });
+       btnShowFila.setOnAction(e ->{
+           for(int i = 0; i < Sender.messageQueue.size(); i++){
+               System.out.println(Sender.messageQueue.getMessage(i));
+           }
+       });
+
        btnNovoToken.setOnAction(e ->{
            Controller.token = token * 1234;
        });

@@ -32,4 +32,10 @@ public class MessageQueue {
     public String getFirstMessage(){
         return queue.getFirst();
     }
+
+    public String getMessage(int index){
+        return this.queue.get(index);
+    }
+
+    public int size(){ return this.queue.size(); }
 }
